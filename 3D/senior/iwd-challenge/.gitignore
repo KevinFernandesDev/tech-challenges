@@ -1,0 +1,25 @@
+Ignore everything
+/*
+/*/
+
+# Inverse ignore some stuff
+!/Assets/
+!/ExternalAssets/
+!/ProjectSettings/
+!.gitignore
+!readme.txt
+!*.unitypackage
+!/UML/
+
+# OS Stuff
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+$RECYCLE.BIN/
+Desktop.ini
+Assets/GameAssets/Levels/Découverte du Projet_BASE_15684.unity
+Assets/GameAssets/Levels/Découverte du Projet_LOCAL_15684.unity
+Assets/GameAssets/Levels/Découverte du Projet_REMOTE_15684.unity
