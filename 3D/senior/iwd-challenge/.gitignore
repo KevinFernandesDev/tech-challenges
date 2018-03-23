@@ -1,4 +1,4 @@
-Ignore everything
+﻿Ignore everything
 /*
 /*/
 
@@ -7,7 +7,9 @@ Ignore everything
 !/ExternalAssets/
 !/ProjectSettings/
 !.gitignore
-!readme.txt
+!readme.txt!
+!readme.md
+!README.md
 !*.unitypackage
 !/UML/
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public static class BoundsExtension
+public static class BoundsExtensions
 {
     /// <summary>
     /// Adds the Bounds object (b) to the current Bounds in a cumulative

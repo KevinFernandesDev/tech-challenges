@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DebugCameraFocus : AbstractCameraFocus
 {
-    [SerializeField] private bool IsEditorDebugEnabled = true;
+    [SerializeField] private bool IsEditorDebugGizmosEnabled = true;
     [SerializeField] private bool IsEditorDebugCameraActive = true;
 
     void OnDrawGizmos()
@@ -14,7 +14,7 @@ public class DebugCameraFocus : AbstractCameraFocus
         // Create a new Bounds object combining all bounds from selected scene objects
         Bounds bounds = Bounds.CreateGroupedBoundsFromRendererList(FindObjectsOfType<MeshRenderer>());
 
-        if (IsEditorDebugEnabled)
+        if (IsEditorDebugGizmosEnabled)
         {
             // Create vertices position list from the generated Bounds
             Vector3[] boundsVerticesPositions = bounds.GetVerticesPositions();
