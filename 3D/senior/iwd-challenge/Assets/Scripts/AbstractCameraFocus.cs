@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public abstract class AbstractCameraFocus : MonoBehaviour
 {
     public float MovementSmoothing = 25f;
     internal Bounds Bounds { get; set; }
     internal Vector3 TargetPosition { get; set; }
 
+    private Camera _camera { get { return GetComponent<Camera>(); } }
     private Vector3 _currentVelocity = Vector3.zero;
 
     /// <summary>
@@ -23,8 +25,7 @@ public abstract class AbstractCameraFocus : MonoBehaviour
     /// </summary>
     internal virtual void CalculateOrthographicSizeToFrameTarget(Bounds bounds)
     {
-        if (!Camera.main.orthographic) return;
-        Camera.main.orthographicSize = Vector3.Distance(bounds.min, bounds.max);
+        _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, Vector3.Distance(bounds.min, bounds.max) / 2f, MovementSmoothing * Time.deltaTime);
     }
 
     /// <summary>
@@ -35,7 +36,7 @@ public abstract class AbstractCameraFocus : MonoBehaviour
     internal virtual void CalculateCameraPositionToFrameTarget(Bounds bounds)
     {
         // Calculate distance needed to frame the Bounds object in the camera view
-        var distanceFactor = (Vector3.Distance(bounds.min, bounds.max) * 0.5f) / Mathf.Abs(Mathf.Sin(Camera.main.fieldOfView * Mathf.Deg2Rad / 2));
+        var distanceFactor = (Vector3.Distance(bounds.min, bounds.max) * 0.5f) / Mathf.Abs(Mathf.Sin(_camera.fieldOfView * Mathf.Deg2Rad / 2));
 
         // Create the target position where the camera should move to have all objects in view
         Vector3 newTargetPos = bounds.center;
