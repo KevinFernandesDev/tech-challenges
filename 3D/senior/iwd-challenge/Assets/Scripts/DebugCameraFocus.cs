@@ -33,20 +33,17 @@ public class DebugCameraFocus : AbstractCameraFocus
     private void DrawDebugGizmosToViewport(Bounds bounds, Vector3[] boundsVerticesPositions)
     {
         // Draw cube gizmo in viewport representing the calculated Bounds
-        Gizmos.DrawCube(bounds.center, bounds.size);
+        Gizmos.DrawWireCube(bounds.center, bounds.size);
 
-        // Draw lines pointing from the camera to each of the Bounds vertices
+        // Draw lines pointing from the camera to each of the Bounds vertices and add number
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[0]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[1]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[2]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[3]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[4]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[5]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[6]);
-        Gizmos.DrawLine(transform.position, boundsVerticesPositions[7]);
+        for(int i =0; i < boundsVerticesPositions.Length; i++)
+        {
+            Gizmos.DrawLine(transform.position, boundsVerticesPositions[i]);
+            UnityEditor.Handles.Label(boundsVerticesPositions[i], i.ToString());
+        }
 
-        // Draw red line from the camera to the center of the generated Bounds
+        // Draw red line from the camera to the center of the Bounds
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, bounds.center);
     }

@@ -7,7 +7,7 @@ public static class BoundsExtensions
     /// function so the specified Bounds grows in size.
     /// </summary>
     /// <param name="boundsToAdd"></param>
-    /// <returns></returns>
+    /// <returns>Bounds</returns>
     public static Bounds GrowBounds(this Bounds a, Bounds boundsToAdd)
     {
         Vector3 max = Vector3.Max(a.max, boundsToAdd.max);
@@ -21,7 +21,7 @@ public static class BoundsExtensions
     /// Retrieve all 8 vertices position from a Bounds object (which is a cube)
     /// and return them in as a list.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Vector3[]</returns>
     public static Vector3[] GetVerticesPositions(this Bounds bounds)
     {
         return new Vector3[8]
@@ -33,7 +33,7 @@ public static class BoundsExtensions
             new Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
             new Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
             new Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
-            new Vector3(bounds.max.x, bounds.max.y, bounds.max.z)
+            new Vector3(bounds.max.x, bounds.max.y, bounds.min.z)
         };
     }
 
@@ -42,7 +42,7 @@ public static class BoundsExtensions
     /// and adding their Bounds to the final Bounds object in a cumulative function.
     /// </summary>
     /// <param name="renderers"></param>
-    /// <returns></returns>
+    /// <returns>Bounds</returns>
     public static Bounds CreateGroupedBoundsFromRendererList(this Bounds bounds, Renderer[] renderers)
     {
         bounds = renderers[0].bounds;

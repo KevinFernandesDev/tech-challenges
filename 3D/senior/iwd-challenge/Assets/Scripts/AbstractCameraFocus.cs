@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public abstract class AbstractCameraFocus : MonoBehaviour
 {
     public float MovementSmoothing = 25f;
+
     internal Bounds Bounds { get; set; }
     internal Vector3 TargetPosition { get; set; }
 
@@ -25,7 +27,11 @@ public abstract class AbstractCameraFocus : MonoBehaviour
     /// </summary>
     internal virtual void CalculateOrthographicSizeToFrameTarget(Bounds bounds)
     {
-        _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, Vector3.Distance(bounds.min, bounds.max) / 2f, MovementSmoothing * Time.deltaTime);
+        // Get the smallest value between the vertical and horizontal fov
+        var radiansAngle = _camera.GetFieldOfViewSmallestSideValue();
+
+        // Compute best fit distance from bounding box
+        _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, bounds.size.magnitude / 2f / radiansAngle, MovementSmoothing * Time.deltaTime);
     }
 
     /// <summary>
@@ -35,13 +41,16 @@ public abstract class AbstractCameraFocus : MonoBehaviour
     /// <param name="bounds"></param>
     internal virtual void CalculateCameraPositionToFrameTarget(Bounds bounds)
     {
+        // Get the smallest value between the vertical and horizontal fov
+        var radiansAngle = _camera.GetFieldOfViewSmallestSideValue();
+
         // Calculate distance needed to frame the Bounds object in the camera view
-        var distanceFactor = (Vector3.Distance(bounds.min, bounds.max) * 0.5f) / Mathf.Abs(Mathf.Sin(_camera.fieldOfView * Mathf.Deg2Rad / 2));
+        var distanceFactor = Vector3.Distance(bounds.center, bounds.max) / (Mathf.Sin(radiansAngle / 2f));
 
         // Create the target position where the camera should move to have all objects in view
         Vector3 newTargetPos = bounds.center;
-        TargetPosition = (newTargetPos - (transform.forward * distanceFactor));
+        TargetPosition = newTargetPos - (transform.forward * distanceFactor);
     }
 
-    
+
 }
