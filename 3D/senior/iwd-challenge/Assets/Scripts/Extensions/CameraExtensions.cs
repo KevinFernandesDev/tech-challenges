@@ -30,4 +30,13 @@ public static class CameraExtensions {
     {
         return Mathf.Min(camera.GetVerticalFieldOfViewInRadians(), camera.GetHorizontalFieldOfViewInRadians());
     }
+
+    /// <summary>
+    /// Get the greatest value between the vertical and horizontal fov
+    /// </summary>
+    /// <returns>float</returns>
+    public static float GetFieldOfViewGreatestSideValue(this Camera camera)
+    {
+        return Mathf.Max(camera.GetVerticalFieldOfViewInRadians(), camera.GetHorizontalFieldOfViewInRadians());
+    }
 }

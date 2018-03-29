@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class AbstractCameraFocus : MonoBehaviour
 {
     public float MovementSmoothing = 25f;
+    public float OrthographicMargin = 3f;
 
     internal Bounds Bounds { get; set; }
     internal Vector3 TargetPosition { get; set; }
@@ -27,11 +28,16 @@ public abstract class AbstractCameraFocus : MonoBehaviour
     /// </summary>
     internal virtual void CalculateOrthographicSizeToFrameTarget(Bounds bounds)
     {
-        // Get the smallest value between the vertical and horizontal fov
-        var radiansAngle = _camera.GetFieldOfViewSmallestSideValue();
-
         // Compute best fit distance from bounding box
-        _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, bounds.size.magnitude / 2f / radiansAngle, MovementSmoothing * Time.deltaTime);
+        if (_camera.aspect >= 1f)
+        {
+            _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, (bounds.size.magnitude - Mathf.Sqrt(bounds.extents.magnitude) + OrthographicMargin) / 2f, MovementSmoothing * Time.deltaTime);
+        }
+        else
+        {
+            _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, (bounds.size.magnitude - Mathf.Sqrt(bounds.extents.magnitude) + OrthographicMargin) / 2f / _camera.aspect, MovementSmoothing * Time.deltaTime);
+        }
+        _camera.ResetAspect();
     }
 
     /// <summary>
